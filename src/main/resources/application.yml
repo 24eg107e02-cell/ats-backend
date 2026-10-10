@@ -1,0 +1,52 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: ats
+
+  datasource:
+    url: jdbc:mysql://mysql-27130e9-aluriakshay2468-1a76.k.aivencloud.com:20485/defaultdb?ssl-mode=REQUIRED
+    username: avnadmin
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+app:
+  jwt:
+    # 32+ character secret used to sign JWTs. Set JWT_SECRET in your deployment.
+    secret: ${JWT_SECRET:change-this-to-a-long-random-secret-value-before-deploy-32chars-min}
+    access-token-expiry-ms: 3600000      # 1 hour
+    refresh-token-expiry-ms: 604800000   # 7 days
+  file-storage:
+    resume-dir: "./uploads/resumes"
+  cors:
+    allowed-origins: "http://localhost:5173,https://24eg107e02.netlify.app"
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    com.akshay.ats: debug
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
